@@ -39,3 +39,5 @@ relative/path/to/dir/anotherfile
 !*Makefile
 .DS_Store
 *data/
+*__pycache__/
+*.pkl
