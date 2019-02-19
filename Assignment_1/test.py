@@ -27,7 +27,7 @@ test_file=sys.argv[2]
 output_file=sys.argv[3]
 
 
-test_sent,test_y=utils.read_data(test_file,label=False)
+test_sent,test_y=utils.read_data(test_file)
 print(len(test_sent),len(test_y))
 print("Cleaning data")
 test_x=utils.clean_data(test_sent)
@@ -61,7 +61,7 @@ predictions/=(1.0*counter)
 predictions[predictions[:]<1]=1
 predictions[predictions[:]>5]=5
 
-# print(mean_squared_error(test_y,predictions))
+print(mean_squared_error(test_y,predictions))
 writer=open(output_file,"w")
 
 for pred in predictions:
