@@ -10,7 +10,7 @@ import pickle
 # from sklearn.metrics import confusion_matrix
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
-# from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import linear_model
 import sys
@@ -35,7 +35,9 @@ test_x=utils.clean_data(test_sent)
 pipeline=utils.load_pickle(model_file)
 
 vectorizer = pipeline['TFIDF_Vectoriser']
-models = pipeline['model']
+models = pipeline['model_logistic']
+models_regress=pipeline['model_regress']
+
 print("Transforming data to tdidf")
 test_x_tfidf=vectorizer.transform(test_x)
 
@@ -43,13 +45,19 @@ print(test_x_tfidf.shape)
 print("Predicting")
 predictions=None
 
+counter=0
 for model in models['estimator']:
-	if predictions is None:
-		predictions=model.predict(test_x_tfidf)
-	else:
-		predictions+=model.predict(test_x_tfidf)
+	pred_x=model.predict_proba(test_x_tfidf)
+	output=utils.purge(models_regress[counter].predict(pred_x))
 
-predictions/=(1.0*len(models['estimator']))
+	if predictions is None:
+		predictions=output
+	else:
+		predictions+=output
+
+	counter+=1
+
+predictions/=(1.0*counter)
 predictions[predictions[:]<1]=1
 predictions[predictions[:]>5]=5
 

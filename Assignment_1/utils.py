@@ -71,3 +71,8 @@ def get_accuracy(gold,pred):
     return np.sum(gold==pred)*1.0/length
 def get_Fscore(gold,pred):
     return (f1_score(gold, pred, average='macro'),f1_score(gold, pred, average='micro'))      
+
+def purge(y):
+    y[y[:]<1]=1
+    y[y[:]>5]=5
+    return y
