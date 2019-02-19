@@ -28,17 +28,19 @@ output_file=sys.argv[3]
 
 
 test_sent,test_y=utils.read_data(test_file,label=False)
-print(len(test_sent))
-test_x,test_y=utils.clean_data(test_sent)
+print(len(test_sent),len(test_y))
+print("Cleaning data")
+test_x=utils.clean_data(test_sent)
 
 pipeline=utils.load_pickle(model_file)
 
 vectorizer = pipeline['TFIDF_Vectoriser']
 models = pipeline['model']
+print("Transforming data to tdidf")
 test_x_tfidf=vectorizer.transform(test_x)
 
 print(test_x_tfidf.shape)
-
+print("Predicting")
 predictions=None
 
 for model in models['estimator']:
@@ -51,7 +53,7 @@ predictions/=(1.0*len(models['estimator']))
 predictions[predictions[:]<1]=1
 predictions[predictions[:]>5]=5
 
-print(mean_squared_error(test_y,predictions))
+# print(mean_squared_error(test_y,predictions))
 writer=open(output_file,"w")
 
 for pred in predictions:
