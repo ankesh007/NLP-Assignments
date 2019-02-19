@@ -1,29 +1,26 @@
 import numpy as np
-import json
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize,sent_tokenize,RegexpTokenizer
 from sklearn.feature_extraction.text import CountVectorizer
 import pickle
-from sklearn.naive_bayes import MultinomialNB
-from collections import Counter
-from sklearn.metrics import f1_score
-from sklearn.metrics import confusion_matrix
-from nltk.sentiment.util import mark_negation
+# from sklearn.naive_bayes import MultinomialNB
+# from collections import Counter
+# from sklearn.metrics import f1_score
+# from sklearn.metrics import confusion_matrix
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
-from sklearn.svm import LinearSVC
-from sklearn.feature_selection import SelectKBest, chi2,f_regression
-from sklearn.linear_model import LogisticRegression
+# from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import linear_model
-import re
 import sys
 import utils
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import ShuffleSplit
-from scipy.sparse import vstack
+
+train_file="./data/A1_Data/train.json"
+dev_file="./data/A1_Data/dev.json" 
+model_file='model.pkl' 
 
 train_file=sys.argv[1]
 dev_file=sys.argv[2]
@@ -51,7 +48,7 @@ X=train_test_x_tfidf
 
 model=linear_model.Ridge(alpha=2)
 cv = ShuffleSplit(n_splits=6, test_size=0.2, random_state=0)
-cv_results = cross_validate(model, X, y, cv=cv,return_train_score=True,return_estimator=True,n_jobs=2,scoring='neg_mean_squared_error')
+cv_results = cross_validate(model, X, y, cv=cv,return_train_score=True,return_estimator=True,n_jobs=1,scoring='neg_mean_squared_error')
 
 print(cv_results['test_score'],"Test")
 print(cv_results['train_score'],"Train")

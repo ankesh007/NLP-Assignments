@@ -1,4 +1,10 @@
 import pickle
+from nltk.stem import WordNetLemmatizer
+import json
+import re
+from nltk.tokenize import word_tokenize
+from nltk.sentiment.util import mark_negation
+import nltk
 
 log=10**5
 
@@ -11,7 +17,7 @@ def dump_pickle(dump,filename):
 	with open(filename,"wb") as f:
 		pickle.dump(dump,f)
 
-def read_data(filename):
+def read_data(filename,label=True):
     x=[]
     y=[]
     
@@ -19,7 +25,8 @@ def read_data(filename):
     for line in file_reader:
         mapping=json.loads(line)
         x.append(mapping['review'])
-        y.append(mapping['ratings'])
+        if label:
+	        y.append(mapping['ratings'])
     
     return x,y
 
