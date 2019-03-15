@@ -41,3 +41,4 @@ relative/path/to/dir/anotherfile
 *data/
 *__pycache__/
 *.pkl
+*.ipynb_checkpoints
