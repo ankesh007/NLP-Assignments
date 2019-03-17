@@ -22,6 +22,7 @@ def read_data(filename):
     
     file_reader=open(filename,"r")
     for line in file_reader:
+        # line=line.encode('utf-8').strip()
         temp=gensim.utils.simple_preprocess(line)
         x.append(temp)
     
