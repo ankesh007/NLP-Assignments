@@ -43,14 +43,17 @@ def main():
 #    assert len(td) == len(pred_dist), "Number of data points not matching"
 
     mrr = 0
+    mr=0
     for i in range(len(pred_dist)):
         act = targets[i]
         act_index = td[i].index(act)
         pred_rank = pred_dist[i][act_index]
         mrr += 1./pred_rank
-
+        mr+=pred_rank
     mrr = mrr / len(pred_dist)
+    mr = mr*1.0 / len(pred_dist)
     print('Mean reciprocal rank = %f'%mrr)
+    print('Mean  rank = %f'%mr)
     
 if __name__ == "__main__":
     main()

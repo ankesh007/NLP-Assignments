@@ -1,12 +1,8 @@
 import pickle
 from nltk.stem import WordNetLemmatizer
-import json
-import re
 from nltk.tokenize import word_tokenize
-from nltk.sentiment.util import mark_negation
 import nltk
 import gensim
-log=10**5
 
 def load_pickle(filename):
 	with open(filename,"rb") as f:
@@ -27,29 +23,6 @@ def read_data(filename):
         x.append(temp)
     
     return x
-
-def clean_data(data):
-    cleaned_data=[]
-    count=0
-    for line in data:
-        count+=1
-        if(count%log==0):
-            print(count)
-        purge=line
-        purge=re.sub("((:\))|(:-\)))","good",purge)
-        purge=re.sub("((:D)|(:-\)\)|(:-D)))","very good",purge)
-        purge=re.sub("((:\())","bad",purge)
-        purge=re.sub("((:p))","tricky",purge)
-        purge=re.sub("((,)|(\n))"," ",purge)
-        purge = mark_negation(nltk.word_tokenize(purge), double_neg_flip=True, shallow=True)
-        new_purge=[]
-        for x in purge:
-            if x not in new_purge:
-                new_purge.append(x)
-        purge=new_purge
-        purge= " ".join(purge)
-        cleaned_data.append(purge)
-    return cleaned_data
 
 lemmatizer=WordNetLemmatizer()
 
