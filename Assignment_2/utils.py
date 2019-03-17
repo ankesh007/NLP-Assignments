@@ -23,7 +23,7 @@ def read_data(filename):
     file_reader=open(filename,"r")
     for line in file_reader:
         # line=line.encode('utf-8').strip()
-        temp=gensim.utils.simple_preprocess(line)
+        temp=gensim.utils.simple_preprocess(line,min_len=1)
         x.append(temp)
     
     return x
@@ -52,25 +52,23 @@ def clean_data(data):
     return cleaned_data
 
 lemmatizer=WordNetLemmatizer()
-counter=0
 
-def lemmatize_tokenize(text):
-    global counter
-    counter+=1
-    if(counter%log==0):
-        print(counter)
-    word_arr=[]
-    for word in word_tokenize(text):
-        word_arr.append(lemmatizer.lemmatize(word))
-    return word_arr
+def lemmatize(lines):
+    new_lines=[]
+    lemmatizer=WordNetLemmatizer()
+    counter=0
+    for line in lines:
+        counter+=1
+        if(counter%10000==0):
+            print(counter)
+        new_line=[]
+        for word in line:
+            new_line.append(lemmatizer.lemmatize(word))
+        new_lines.append(new_line)
+    return new_lines
 
-def get_accuracy(gold,pred):
-    length=len(gold)
-    return np.sum(gold==pred)*1.0/length
-def get_Fscore(gold,pred):
-    return (f1_score(gold, pred, average='macro'),f1_score(gold, pred, average='micro'))      
-
-def purge(y):
-    y[y[:]<1]=1
-    y[y[:]>5]=5
-    return y
+def lemmatize_1d(y):
+    new_y=[]
+    for i in y:
+        new_y.append(lemmatizer.lemmatize(i))
+    return new_y
