@@ -12,6 +12,7 @@ data_dir=sys.argv[1]
 model_path=sys.argv[2]
 pretrained_vectors=sys.argv[3]
 context_window=int(sys.argv[4])
+print(context_window)
 
 x=[]
 for dir,subdir,files in os.walk(data_dir):

@@ -14,6 +14,7 @@ eval_data_file=sys.argv[1]
 eval_words_file=sys.argv[2]
 model_path=sys.argv[3]
 context_window=int(sys.argv[4])
+print(context_window)
 
 reader=open(eval_words_file,'r')
 eval_words_list=[]
