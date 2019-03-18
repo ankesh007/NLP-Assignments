@@ -1,7 +1,7 @@
 import gensim
 import pickle
 from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import wordpunct_tokenize
 import nltk
 import os
 import utils
@@ -19,7 +19,7 @@ print(context_window)
 reader=open(eval_words_file,'r')
 eval_words_list=[]
 for line in reader:
-    tok_line=line.strip().split(" ")
+    tok_line=line.strip().lower().split(" ")
     x=len(tok_line)
     for i in range(x):
         tok_line[i]=tok_line[i].split(":")[-1]
@@ -33,15 +33,13 @@ y=[]
 
 for line in reader:
     tok_line=line.strip().split("<<target>>")
-    context=gensim.utils.simple_preprocess(tok_line[0],min_len=1)
+    context=wordpunct_tokenize(tok_line[0].lower())
     x=len(context)
     
-    y.append(tok_line[1].split("::::")[-1])
-    context2=gensim.utils.simple_preprocess(tok_line[1])
+    y.append(tok_line[1].split("::::")[-1].lower())
+    tok_line[1]=tok_line[1].split("::::")[0]
+    context2=wordpunct_tokenize(tok_line[1].lower())
 
-    if len(context2)>0:
-        context2.pop()
-    
     context_list.append(context)
     context_list.append(context2)
 print(len(context_list),len(y))
@@ -177,4 +175,4 @@ def rerank(rank_list,context_list,eval_words_list,rr=30):
 ranking=run_eval(model_path,flag=True,hits=2000,context_win=2)
 print(len(ranking))
 rerank(ranking,context_list=context_list,eval_words_list=eval_words_list,rr=1000)
-write_file(ranking,str(context_window)+'output.txt')
+write_file(ranking,'output.txt')

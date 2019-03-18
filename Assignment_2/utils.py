@@ -1,6 +1,6 @@
 import pickle
 from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import wordpunct_tokenize
 import nltk
 import gensim
 
@@ -15,13 +15,11 @@ def dump_pickle(dump,filename):
 
 def read_data(filename):
     x=[]
-    
     file_reader=open(filename,"r")
     for line in file_reader:
         # line=line.encode('utf-8').strip()
-        temp=gensim.utils.simple_preprocess(line,min_len=1)
+        temp=wordpunct_tokenize(line.strip())
         x.append(temp)
-    
     return x
 
 lemmatizer=WordNetLemmatizer()
