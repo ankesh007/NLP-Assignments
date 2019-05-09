@@ -1,0 +1,1 @@
+wget https://owncloud.iitd.ac.in/nextcloud/index.php/s/E2EnmpaLTqBGogT/download -O model.pt
